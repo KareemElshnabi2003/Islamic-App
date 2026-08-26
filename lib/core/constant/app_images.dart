@@ -1,0 +1,27 @@
+class AppImages {
+  static String logoImg="lib/core/images/logo.png";
+  static String logoDarkImg="lib/core/images/logo_dark.png";
+  static String quranImg="lib/core/images/quran.png";
+  static String ahadethImg="lib/core/images/ahadeth.png";
+  static String azkarImg="lib/core/images/azkar.png";
+  static String radioImg="lib/core/images/radio.png";
+  static String homeIconImg="lib/core/images/home_icon.png";
+  static String bgLightImg="lib/core/images/bg_light.png";
+  static String bgDarkImg="lib/core/images/bg_dark.png";
+  static String radioIconImg="lib/core/images/radio_icon.png";
+  static String ahadethIconImg="lib/core/images/ahadeth_icon.png";
+  static String qareTestImg="lib/core/images/qare_test.webp";
+  static String sebhaImg="lib/core/images/sebha.png";
+  static String headSbhaImg="lib/core/images/head_sebha.png";
+  static String zekrImg="lib/core/images/zekr.webp";
+  static String azanImg="lib/core/images/azan.webp";
+  static String storiesImg="lib/core/images/stories.webp";
+  static String timesImg="lib/core/images/times.webp";
+  static String fajrImg="lib/core/images/fajr.webp";
+  static String zohrImg="lib/core/images/zohr.webp";
+  static String asrImg="lib/core/images/asr.webp";
+  static String magrebImg="lib/core/images/magreb.webp";
+  static String eashaImg="lib/core/images/easha.webp";
+  static String azanBGImg="lib/core/images/azan_bg.webp";
+  static String compusImg="lib/core/images/compus.png";
+}
