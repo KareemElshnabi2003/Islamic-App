@@ -79,7 +79,7 @@ class AdhanTimerCubit extends Cubit<AdhanTimerState> {
 
     // 🛑 1. احساب أوقات الصلاة الحقيقية
     Map<String, DateTime> prayerDateTimes = {
-      "الفجر": _parseTime("23:24", now),
+      "الفجر": _parseTime(times.fajr, now),
       "الظهر": _parseTime(times.duhr, now),
       "العصر": _parseTime(times.asr, now),
       "المغرب": _parseTime(times.magreb, now),
