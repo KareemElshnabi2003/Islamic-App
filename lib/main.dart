@@ -1,7 +1,9 @@
 
 
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:islamic_app/core/network/network_cubit.dart';
 import 'package:islamic_app/core/network/network_state.dart';
 import 'package:islamic_app/core/helper/cache_helper.dart';
@@ -15,12 +17,12 @@ import 'core/di/service_locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await initializeDateFormatting('ar', "");
   await CacheHelper.init();
 
   setupServiceLocator();
 
-
+  await AndroidAlarmManager.initialize();
 
   runApp( IslamicApp(initialRoute:Routes.splashScreen ,));
 }
@@ -42,7 +44,6 @@ class IslamicApp extends StatelessWidget {
             ],
             child: BlocListener<NetworkCubit, NetworkStatus>(
               listener: (context, networkStatus) {
-                // بنسمع لحالة النت، لو فصل بنطلع رسالة خفيفة للمستخدم
                 if (networkStatus == NetworkStatus.disconnected ) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(

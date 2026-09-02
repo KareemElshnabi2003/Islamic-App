@@ -15,10 +15,14 @@ class RadioCubit extends Cubit<RadioState> {
     final result=await getRadioUrlsUseCase.call();
     result.fold(
           (failure) {
-        emit(RadioError(message: failure.errorModel.errorMessage));
+            if (isClosed) return; // السطر ده للحماية
+
+            emit(RadioError(message: failure.errorModel.errorMessage));
       },
           (radios) {
-        emit(RadioSuccess(radios: radios));
+            if (isClosed) return; // السطر ده للحماية
+
+            emit(RadioSuccess(radios: radios));
       },
     );
   }

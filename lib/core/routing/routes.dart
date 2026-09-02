@@ -13,5 +13,9 @@ class Routes {
   static const String azanScreen = '/AzanScreen';//home screen
   static const String storyInfoScreen = '/StoryinfoScreen';//home screen
   static const String compusScreen = '/CompusScreen';//home screen
+  static const String doaaCatScreen = '/DoaaCatScreen';//home screen
+  static const String videosScreen = '/VideosScreen';//home screen
+  static const String videosTypeScreen = '/VideosTypeScreen';//home screen
+  static const String doaaDetailsScreen = '/DoaaDetailsScreen';//home screen
 
 }

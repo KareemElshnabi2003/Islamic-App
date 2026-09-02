@@ -21,7 +21,7 @@ dependencies:
   screen_go: ^1.1.8
   permission_handler: ^12.0.3
   intl: ^0.20.3
-  video_player: ^2.13.0
+  video_player: ^2.14.0
   chewie: ^1.14.1
   path_provider: ^2.1.6
   gal: ^2.3.3
@@ -40,6 +40,9 @@ dependencies:
   # Location & Map
   geolocator: ^11.0.0
   equatable: ^2.1.0
+  hijri: ^3.0.0      # للتاريخ الهجري الدقيق
+  geocoding: ^3.0.0
+  android_alarm_manager_plus: ^4.0.4
 cupertino_icons: ^1.0.8
 
 dev_dependencies:
@@ -54,3 +57,4 @@ flutter:
 
   assets:
     - lib/core/images/
+    - lib/core/assets/stories.json

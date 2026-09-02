@@ -26,7 +26,8 @@ class RadioScreen extends StatelessWidget {
   create: (context) => sl<RadioCubit>()..getRadios(),
   child: Scaffold(
       drawer: Drawer(
-          child:DrawerWidget(   onPressCompus:(){context.push(Routes.compusScreen);},val: isDarkMode,theme: theme,onChangeTheme: (v){
+          child:DrawerWidget(       onPressDoaa: () { context.push(Routes.doaaCatScreen); },
+            onPressVideos: () { context.push(Routes.videosTypeScreen); },   onPressCompus:(){context.push(Routes.compusScreen);},val: isDarkMode,theme: theme,onChangeTheme: (v){
             context.read<ThemeCubit>().toggleTheme();
           },onPressAzan: (){
             context.push(Routes.azanScreen);

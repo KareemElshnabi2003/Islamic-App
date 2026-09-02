@@ -3,12 +3,6 @@
 //url >> https://api.aladhan.com/v1/timings/01-01-2025?latitude=51.5194682&longitude=-0.1360365
 // --header 'Accept-Encoding: '
 //***********************************
-//  url to get next azan time
-//-------------------------------
-
-// /curl 'https://api.aladhan.com/v1/nextPrayer/01-01-2025?latitude=51.5194682&longitude=-0.1360365' \
-// --header 'Accept: application/json'
-//*************************************
 
 // all ahadeth titles
 // https://ummahapi.com/api/hadith/collections
@@ -17,16 +11,10 @@
 //https://ummahapi.com/api/hadith/muslim
 
 
-// ادعيه
-// https://ummahapi.com/api/duas/categories
 
-//دعاء معين او كاتيجوري معين
-// https://ummahapi.com/api/duas/2
 
 // id هيبقي وليكن اذكار الصباح عددها 15 يبقي لو عايز اجيب ال 15 الي دي هيبقي من 1 ل 15
 
-
-// names of gods
 // اسماء الله لحسني
 //https://ummahapi.com/api/asma-ul-husna
 
@@ -59,3 +47,18 @@
 //                                  done
 //radio
 //https://www.mp3quran.net/api/v3/radios?language=ar
+
+
+
+// ادعيه
+// https://ummahapi.com/api/duas/categories
+
+//دعاء معين او كاتيجوري معين
+// https://ummahapi.com/api/duas/2
+
+//  url to get next azan time
+//-------------------------------
+
+// /curl 'https://api.aladhan.com/v1/nextPrayer/01-01-2025?latitude=51.5194682&longitude=-0.1360365' \
+// --header 'Accept: application/json'
+//*************************************

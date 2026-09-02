@@ -13,8 +13,10 @@ class DrawerWidget extends StatelessWidget {
   final void Function() onPressTheme;
   final void Function() onPressCompus;
   final void Function(bool) onChangeTheme;
+  final void Function() onPressVideos;
+  final void Function() onPressDoaa;
   final bool val;
-  const DrawerWidget({super.key, required this.theme, required this.onPressTimes, required this.onPressStories, required this.onPressAzan, required this.onPressZekr, required this.onPressTheme, required this.onChangeTheme, required this.val, required this.onPressCompus});
+  const DrawerWidget({super.key, required this.theme, required this.onPressTimes, required this.onPressStories, required this.onPressAzan, required this.onPressZekr, required this.onPressTheme, required this.onChangeTheme, required this.val, required this.onPressCompus, required this.onPressVideos, required this.onPressDoaa});
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +71,24 @@ class DrawerWidget extends StatelessWidget {
             ) ,
             trailing: Icon(Icons.arrow_forward_ios,color:theme.iconTheme.color ,size: 17.sp,) ,
             title:              TextNormalWidget(text: "اشعار الذكر", size: 15.sp, color: theme.textTheme.bodyMedium!.color!, decoration: TextDecoration.none, decorationColor:theme.textTheme.bodyMedium!.color! , maxLines: 1, weight: FontWeight.bold),
+
+          ),
+          ListTile(
+            onTap: onPressVideos,
+            leading:CircleAvatar(
+              backgroundImage:AssetImage(AppImages.videoImg),
+            ) ,
+            trailing: Icon(Icons.arrow_forward_ios,color:theme.iconTheme.color ,size: 17.sp,) ,
+            title:              TextNormalWidget(text: "فيديوهات اسلامية", size: 15.sp, color: theme.textTheme.bodyMedium!.color!, decoration: TextDecoration.none, decorationColor:theme.textTheme.bodyMedium!.color! , maxLines: 1, weight: FontWeight.bold),
+
+          ),
+          ListTile(
+            onTap: onPressDoaa,
+            leading:CircleAvatar(
+              backgroundImage:AssetImage(AppImages.doaaImg),
+            ) ,
+            trailing: Icon(Icons.arrow_forward_ios,color:theme.iconTheme.color ,size: 17.sp,) ,
+            title:              TextNormalWidget(text: "أدعية المسلم", size: 15.sp, color: theme.textTheme.bodyMedium!.color!, decoration: TextDecoration.none, decorationColor:theme.textTheme.bodyMedium!.color! , maxLines: 1, weight: FontWeight.bold),
 
           ),
           ListTile(

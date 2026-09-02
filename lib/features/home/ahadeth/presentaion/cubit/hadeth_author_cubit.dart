@@ -8,16 +8,20 @@ class HadethAuthorCubit extends Cubit<HadethAuthorState> {
   final GetHadethAuthorUseCase getHadethAuthorUseCase;
   HadethAuthorCubit( {required this.getHadethAuthorUseCase}):super(HadethAuthorInitial());
 
-  Future <void>getAuthors({required String author})async{
+  Future <void>getAuthors()async{
     emit(HadethAuthorLoading());
 
     final result=await getHadethAuthorUseCase.call();
     result.fold(
           (failure) {
-        emit(HadethAuthorError(message: failure.errorModel.errorMessage));
+            if (isClosed) return; // السطر ده للحماية
+
+            emit(HadethAuthorError(message: failure.errorModel.errorMessage));
       },
           (authors) {
-        emit(HadethAuthorSuccess(authors: authors));
+            if (isClosed) return; // السطر ده للحماية
+
+            emit(HadethAuthorSuccess(authors: authors));
       },
     );
   }

@@ -9,8 +9,8 @@ class GetHadethUseCase {
 
   GetHadethUseCase({required this.hadethRepositories});
 
-  Future <Either<ServerException,List<HadethEntity>>> call({required String author}){
-    return hadethRepositories.getHadeth(author: author);
+  Future <Either<ServerException,List<HadethEntity>>> call({required String author,required int page}){
+    return hadethRepositories.getHadeth(author: author,page:page);
   }
 
 }

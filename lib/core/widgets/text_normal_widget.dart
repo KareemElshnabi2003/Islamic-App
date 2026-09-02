@@ -16,6 +16,6 @@ class TextNormalWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text,maxLines: maxLines,overflow: TextOverflow.ellipsis, style: GoogleFonts.elMessiri(fontWeight:weight,fontSize: size,color: color,decoration: decoration,decorationColor: decorationColor, ),) ;
+    return Text(textAlign: TextAlign.center,textDirection: TextDirection.rtl,text,maxLines: maxLines,overflow: TextOverflow.ellipsis, style: GoogleFonts.elMessiri(fontWeight:weight,fontSize: size,color: color,decoration: decoration,decorationColor: decorationColor, ),) ;
   }
 }

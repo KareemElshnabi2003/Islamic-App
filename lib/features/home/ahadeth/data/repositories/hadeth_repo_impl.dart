@@ -5,47 +5,47 @@ import 'package:islamic_app/core/api/end_points.dart';
 import 'package:islamic_app/core/errors/error_model.dart';
 import 'package:islamic_app/core/errors/server_exceptions.dart';
 import 'package:islamic_app/core/helper/cache_helper.dart';
-import 'package:islamic_app/core/network/network_info.dart';
 import 'package:islamic_app/features/home/ahadeth/data/model/hadeth_author_model.dart';
 import 'package:islamic_app/features/home/ahadeth/data/model/hadeth_model.dart';
 import 'package:islamic_app/features/home/ahadeth/domain/entities/hadeth_author_entity.dart';
 import 'package:islamic_app/features/home/ahadeth/domain/entities/hadeth_entity.dart';
 import 'package:islamic_app/features/home/ahadeth/domain/repositories/hadeth_repository.dart';
 
-
 class HadethRepoImpl extends HadethRepository {
   final ApiConsumer api;
-  final NetworkInfo networkInfo;
 
   HadethRepoImpl({
     required this.api,
-    required this.networkInfo,
   });
 
   @override
-  Future<Either<ServerException, List<HadethEntity>>> getHadeth({required String author}) async {
-    final String cacheKey = "CACHED_HADETH_$author";
+  Future<Either<ServerException, List<HadethEntity>>> getHadeth({required String author, required int page}) async {
+    final String cacheKey = "CACHED_HADETH_${author}_$page";
 
-    if (await networkInfo.isConnected) {
-      try {
-        final response = await api.get("${EndPoints.getHadeth}/$author");
-        final List dataList = response['data']['hadiths'] as List;
+    try {
+      final response = await api.get("${EndPoints.getHadeth}/$author?page=$page");
 
-        List<HadethModel> ahadeth = dataList.map((json) => HadethModel.fromjson(json)).toList();
-
-        await CacheHelper.saveData(key: cacheKey, value: jsonEncode(dataList));
-        return Right(ahadeth);
-
-      } on ServerException catch (e) {
-        return _getCachedHadeth(cacheKey, fallbackException: e);
+      List dataList = [];
+      if (response['data'] is List) {
+        dataList = response['data'];
+      } else if (response['data'] is Map) {
+        if (response['data']['hadiths'] != null) {
+          dataList = response['data']['hadiths'] as List;
+        } else if (response['data']['data'] != null) {
+          dataList = response['data']['data'] as List;
+        } else {
+          dataList = (response['data'] as Map).values.toList();
+        }
       }
-    } else {
-      return _getCachedHadeth(
-        cacheKey,
-        fallbackException: ServerException(
-          errorModel: ErrorModel(status: 503, errorMessage: 'لا يوجد اتصال بالإنترنت'),
-        ),
-      );
+
+      List<HadethModel> ahadeth = dataList.map((json) => HadethModel.fromjson(json)).toList();
+      await CacheHelper.saveData(key: cacheKey, value: jsonEncode(dataList));
+      return Right(ahadeth);
+
+    } on ServerException catch (e) {
+      return _getCachedHadeth(cacheKey, fallbackException: e);
+    } catch (e) {
+      return Left(ServerException(errorModel: ErrorModel(status: 500, errorMessage: 'حدث خطأ في معالجة الأحاديث')));
     }
   }
 
@@ -53,26 +53,19 @@ class HadethRepoImpl extends HadethRepository {
   Future<Either<ServerException, List<HadethAuthorEntity>>> getHadethAuthor() async {
     const String cacheKey = "CACHED_AUTHORS";
 
-    if (await networkInfo.isConnected) {
-      try {
-        final response = await api.get(EndPoints.getHadethAuthor);
-        final List dataList = response['data'] as List;
+    try {
+      final response = await api.get(EndPoints.getHadethAuthor);
 
-        List<HadethAuthorModel> authors = dataList.map((json) => HadethAuthorModel.fromjson(json)).toList();
+      final List dataList = response['data']['collections'] as List;
+      List<HadethAuthorModel> authors = dataList.map((json) => HadethAuthorModel.fromjson(json)).toList();
 
-        await CacheHelper.saveData(key: cacheKey, value: jsonEncode(dataList));
-        return Right(authors);
+      await CacheHelper.saveData(key: cacheKey, value: jsonEncode(dataList));
+      return Right(authors);
 
-      } on ServerException catch (e) {
-        return _getCachedAuthors(cacheKey, fallbackException: e);
-      }
-    } else {
-      return _getCachedAuthors(
-        cacheKey,
-        fallbackException: ServerException(
-          errorModel: ErrorModel(status: 503, errorMessage: 'لا يوجد اتصال بالإنترنت'),
-        ),
-      );
+    } on ServerException catch (e) {
+      return _getCachedAuthors(cacheKey, fallbackException: e);
+    } catch (e) {
+      return Left(ServerException(errorModel: ErrorModel(status: 500, errorMessage: 'حدث خطأ في معالجة بيانات السيرفر')));
     }
   }
 

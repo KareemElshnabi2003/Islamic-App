@@ -5,5 +5,5 @@ import 'package:islamic_app/features/home/ahadeth/domain/entities/hadeth_entity.
 
 abstract class HadethRepository {
   Future <Either<ServerException,List<HadethAuthorEntity>>> getHadethAuthor();
-  Future <Either<ServerException,List<HadethEntity>>> getHadeth({required String author});
+  Future <Either<ServerException,List<HadethEntity>>> getHadeth({required String author,required int page});
 }

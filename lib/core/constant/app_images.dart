@@ -24,4 +24,6 @@ class AppImages {
   static String eashaImg="lib/core/images/easha.webp";
   static String azanBGImg="lib/core/images/azan_bg.webp";
   static String compusImg="lib/core/images/compus.png";
+  static String doaaImg="lib/core/images/doaa.webp";
+  static String videoImg="lib/core/images/video.webp";
 }
