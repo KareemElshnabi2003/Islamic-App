@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:islamic_app/core/di/service_locator.dart';
+import 'package:islamic_app/features/drawer/azan/presentaion/screens/azan_audio_screen.dart';
 import 'package:islamic_app/features/drawer/doaa/presentaion/cubit/doaa_cubit.dart';
 import 'package:islamic_app/features/drawer/doaa/presentaion/cubit/oaa_reader_cubit.dart';
 import 'package:islamic_app/features/drawer/doaa/presentaion/screens/doaa_cat_screen.dart';
@@ -15,8 +16,9 @@ import 'package:islamic_app/features/drawer/videos/presentaion/screens/video_typ
 import 'package:islamic_app/features/drawer/videos/presentaion/screens/videos_screen.dart';
 import 'package:islamic_app/features/drawer/zekr/presentaion/cubit/zekr_notify_cubit.dart';
 
-
-import '../../features/drawer/azan/presentaion/screens/azan_screen.dart';
+// استدعاء الكيوبيت الخاص بالعداد
+import '../../features/drawer/azan/presentaion/cubit/azan_cubit.dart';
+import '../../features/drawer/azan/presentaion/screens/azan_screen.dart'; // تأكد إن دي اللي فيها AdhanSettingsScreen
 import '../../features/drawer/compus/presentaion/screens/compus_screen.dart';
 import '../../features/drawer/times/presentaion/screens/times_screen.dart';
 import '../../features/drawer/zekr/presentaion/screens/notify_zekr_screen.dart';
@@ -52,7 +54,7 @@ class AppRouter {
           },
         ),
         GoRoute(
-          path: Routes.doaaCatScreen, // تأكد إن الاسم ده موجود في ملف Routes
+          path: Routes.doaaCatScreen,
           builder: (context, state) {
             return BlocProvider<DoaaCubit>(
               create: (context) => sl<DoaaCubit>()..getAllCategoriesWithDuas(),
@@ -111,14 +113,30 @@ class AppRouter {
           path: Routes.timesScreen,
           builder: (context, state) => TimesScreen(),
         ),
+
         GoRoute(
-          path: Routes.azanScreen,
-          builder: (context, state) => AzanScreen(),
+          path: Routes.azanAudioScreen,
+          builder: (context, state) {
+            final args = state.extra as Map<String, dynamic>;
+            return AdhanAudioScreen(
+              prayerName: args['prayerName'] as String,
+              selectedSheikhAudio: args['selectedSheikhAudio'] as String,
+            );
+          },
         ),
+
         GoRoute(
-          path: Routes.notifyZekrScreen,
-          builder: (context, state) => NotifyZekrScreen(),
+          path: Routes.azanSettingScreen,
+          builder: (context, state) {
+            return BlocProvider<AdhanTimerCubit>(
+              create: (context) => sl<AdhanTimerCubit>()..initTimer(),
+              child:
+              AdhanSettingsScreen(),
+            );
+          },
         ),
+
+
         GoRoute(
           path: Routes.compusScreen,
           builder: (context, state) => CompusScreen(),

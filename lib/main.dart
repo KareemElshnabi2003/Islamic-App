@@ -20,7 +20,7 @@ void main() async {
   await initializeDateFormatting('ar', "");
   await CacheHelper.init();
 
-  setupServiceLocator();
+  await setupServiceLocator();
 
   await AndroidAlarmManager.initialize();
 

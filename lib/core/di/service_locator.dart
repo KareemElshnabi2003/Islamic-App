@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
-
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:islamic_app/features/drawer/azan/data/repositories/azan_time_repo_impl.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // 👈 استدعاء SharedPreferences
+
 import 'package:islamic_app/core/api/api_consumer.dart';
 import 'package:islamic_app/core/api/dio_consumer.dart';
 import 'package:islamic_app/core/network/network_cubit.dart';
@@ -52,9 +54,21 @@ import 'package:islamic_app/features/home/radio/domain/repositories/Radio_reposi
 import 'package:islamic_app/features/home/radio/domain/usecases/get_radio_urls_use_case.dart';
 import 'package:islamic_app/features/home/radio/presentaion/cubit/radio_cubit.dart';
 
+// 👈 استدعاءات ميزة الأذان
+import 'package:islamic_app/features/drawer/azan/data/datasource/azan_local_data_source.dart';
+import 'package:islamic_app/features/drawer/azan/domain/repositories/azan_repository.dart';
+import 'package:islamic_app/features/drawer/azan/domain/usecases/get_cached_time_azan_use_case.dart';
+import 'package:islamic_app/features/drawer/azan/presentaion/cubit/azan_cubit.dart';
+import 'package:islamic_app/features/drawer/azan/presentaion/cubit/azan_audio_cubit.dart';
+
 final sl = GetIt.instance;
 
-void setupServiceLocator() {
+// 👈 غيرنا دي لـ async عشان نقدر نـ await الـ SharedPreferences
+Future<void> setupServiceLocator() async {
+
+  // 👈 تعريف SharedPreferences في الـ GetIt
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
 //network
   sl.registerLazySingleton<InternetConnectionChecker>(() => InternetConnectionChecker.createInstance(),);
@@ -118,6 +132,7 @@ void setupServiceLocator() {
   sl.registerLazySingleton<DoaaRepository>(() => DoaaRepoImpl(api: sl()),);
   sl.registerLazySingleton<GetCategoriesUseCase>(() => GetCategoriesUseCase(doaaRepository: sl()));
   sl.registerFactory<DoaaCubit>(() => DoaaCubit(getCategoriesUseCase: sl()));
+
   // Zekr Notifications Settings
   sl.registerLazySingleton<ZekrSettingsRepository>(() => ZekrSettingsRepoImpl());
   sl.registerLazySingleton<GetZekrSettingsUseCase>(() => GetZekrSettingsUseCase(repository: sl()));
@@ -127,6 +142,20 @@ void setupServiceLocator() {
     saveZekrSettingsUseCase: sl(),
   ));
 
+  // =====================================
+  // 👇 إضافات ميزة الأذان (Azan)
+  // =====================================
 
+  // Data Source
+  sl.registerLazySingleton<BaseAdhanLocalDataSource>(() => AdhanLocalDataSourceImpl(sl()));
 
+  // Repository
+  sl.registerLazySingleton<BaseAdhanTimerRepository>(() => AdhanTimerRepositoryImpl(sl()));
+
+  // Use Case
+  sl.registerLazySingleton<GetCachedTimesUseCase>(() => GetCachedTimesUseCase(sl()));
+
+  // Cubits
+  sl.registerFactory<AdhanTimerCubit>(() => AdhanTimerCubit(sl()));
+  sl.registerFactory<AdhanAudioCubit>(() => AdhanAudioCubit());
 }

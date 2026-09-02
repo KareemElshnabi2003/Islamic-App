@@ -33,7 +33,7 @@ class HomePageScreen extends StatelessWidget {
               val: isDarkMode,
               theme: theme,
               onChangeTheme: (v) { context.read<ThemeCubit>().toggleTheme(); },
-              onPressAzan: () { context.push(Routes.azanScreen); },
+              onPressAzan: () { context.push(Routes.azanSettingScreen); },
               onPressStories: () { context.push(Routes.storiesScreen); },
               onPressTheme: () { context.read<ThemeCubit>().toggleTheme(); },
               onPressTimes: () { context.push(Routes.timesScreen); },

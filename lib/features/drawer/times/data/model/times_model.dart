@@ -1,17 +1,4 @@
-// "data": {
-// "timings": {
-// "Fajr": "06:03",
-// "Sunrise": "08:06",
-// "Dhuhr": "12:04",
-// "Asr": "13:45",
-// "Sunset": "16:03",
-// "Maghrib": "16:03",
-// "Isha": "17:59",
-// "Imsak": "05:53",
-// "Midnight": "00:04",
-// "Firstthird": "21:24",
-// "Lastthird": "02:45"
-// },
+
 
 import 'package:islamic_app/features/drawer/times/domain/entities/times_entity.dart';
 

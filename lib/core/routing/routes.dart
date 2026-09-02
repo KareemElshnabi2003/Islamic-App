@@ -10,7 +10,8 @@ class Routes {
   static const String notifyZekrScreen = '/NotifyZekrScreen';//home screen
   static const String timesScreen = '/TimesScreen';//home screen
   static const String storiesScreen = '/StoriesScreen';//home screen
-  static const String azanScreen = '/AzanScreen';//home screen
+  static const String azanAudioScreen = '/AdhanAudioScreen';//home screen
+  static const String azanSettingScreen = '/AdhanSettingsScreen';//home screen
   static const String storyInfoScreen = '/StoryinfoScreen';//home screen
   static const String compusScreen = '/CompusScreen';//home screen
   static const String doaaCatScreen = '/DoaaCatScreen';//home screen

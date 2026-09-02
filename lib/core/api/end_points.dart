@@ -8,6 +8,7 @@ class EndPoints {
   static const String getTimes = "https://api.aladhan.com/v1/timings";
   static const String getVideos = "https://www.mp3quran.net/api/v3/videos?language=ar";
   static const String getAllDoaa = "https://ummahapi.com/api/duas";
+  static const String getNextTimeAzan = "https://api.aladhan.com/v1/nextPrayer";
 
 
 }

@@ -43,6 +43,7 @@ dependencies:
   hijri: ^3.0.0      # للتاريخ الهجري الدقيق
   geocoding: ^3.0.0
   android_alarm_manager_plus: ^4.0.4
+  animate_do: ^3.3.4
 cupertino_icons: ^1.0.8
 
 dev_dependencies:
@@ -58,3 +59,4 @@ flutter:
   assets:
     - lib/core/images/
     - lib/core/assets/stories.json
+    - lib/core/audio/

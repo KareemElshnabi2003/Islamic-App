@@ -30,7 +30,7 @@ class RadioScreen extends StatelessWidget {
             onPressVideos: () { context.push(Routes.videosTypeScreen); },   onPressCompus:(){context.push(Routes.compusScreen);},val: isDarkMode,theme: theme,onChangeTheme: (v){
             context.read<ThemeCubit>().toggleTheme();
           },onPressAzan: (){
-            context.push(Routes.azanScreen);
+            context.push(Routes.azanSettingScreen);
           },onPressStories: (){            context.push(Routes.storiesScreen);
           },onPressTheme: (){
 
