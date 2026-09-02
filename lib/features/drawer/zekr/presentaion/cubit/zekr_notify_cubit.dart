@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
@@ -13,6 +14,7 @@ import 'package:islamic_app/features/drawer/zekr/presentaion/cubit/zekr_notify_s
 @pragma('vm:entry-point')
 void backgroundZekrTask() async {
   WidgetsFlutterBinding.ensureInitialized();
+  DartPluginRegistrant.ensureInitialized();
 
   final List<String> azkar = [
     "سبحان الله",
@@ -89,19 +91,21 @@ class ZekrNotificationCubit extends Cubit<ZekrNotificationState> {
     );
     saveZekrSettingsUseCase.call(settings);
   }
-
   void _handleAlarmState() async {
     const int alarmId = 1;
 
     if (state.isEnabled) {
       await AndroidAlarmManager.cancel(alarmId);
+
+      // رجعناها periodic عشان تشتغل كل فترة بناءً على اختيار اليوزر
       await AndroidAlarmManager.periodic(
-        Duration(minutes: state.interval),
+        Duration(minutes: state.interval), // الوقت اللي اليوزر اختاره
         alarmId,
         backgroundZekrTask,
         exact: true,
         wakeup: true,
       );
+
     } else {
       await AndroidAlarmManager.cancel(alarmId);
     }
