@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:islamic_app/core/constant/app_images.dart';
 // تأكد من مسارات الكيوبيت عندك
 import 'package:islamic_app/features/drawer/azan/presentaion/cubit/azan_audio_cubit.dart';
 import 'package:islamic_app/features/drawer/azan/presentaion/cubit/azan_audio_state.dart';
@@ -11,9 +12,9 @@ class AdhanAudioScreen extends StatelessWidget {
 
   // 🔴 تأكد إن المسارات دي صحيحة وموجودة في pubspec.yaml
   final List<String> azanImages = [
-    'assets/images/azan1.webp',
-    'assets/images/azan2.webp',
-    'assets/images/azan3.webp',
+    AppImages.azan1,
+    AppImages.azan2,
+    AppImages.azan3,
   ];
 
   AdhanAudioScreen({
@@ -66,9 +67,8 @@ class AdhanAudioScreen extends StatelessWidget {
                   ),
                 ),
 
-                // ==========================================
-                // 2. الظل عشان الكلام يبقى واضح
-                // ==========================================
+
+
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(

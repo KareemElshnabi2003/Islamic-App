@@ -189,9 +189,8 @@ class AdhanSettingsScreen extends StatelessWidget {
                         leading: const Icon(Icons.person, color: Color(0xFFB5935A)),
                         title: Text(sheikh['name']!, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                         onTap: () {
-                          // 👈 بنستخدم الـ cubit اللي مسكناه فوق
                           cubit.changeSheikh(sheikh['name']!, sheikh['path']!);
-                          bottomSheetContext.pop(); // بنقفل القائمة
+                          bottomSheetContext.pop();
                         },
                       );
                     },
