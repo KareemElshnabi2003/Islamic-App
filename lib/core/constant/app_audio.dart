@@ -1,10 +1,9 @@
 class AppAudio {
-  static String abdelbaset="lib/core/audio/abdelbaset.mp3";
-  static String elkordy="lib/core/audio/ahmed_elkordy.mp3";
-  static String eldosary="lib/core/audio/eldosary.mp3";
-  static String elhosary="lib/core/audio/elhosary.mp3";
-  static String elmenshawy="lib/core/audio/elmenshawy.mp3";
-  static String khalil="lib/core/audio/hesham_khalil.mp3";
-  static String elsogier="lib/core/audio/samer_elsogier.mp3";
-
+  static String abdelbaset = "android.resource://com.example.islamic_app/raw/abdelbaset";
+  static String elkordy = "android.resource://com.example.islamic_app/raw/ahmed_elkordy";
+  static String eldosary = "android.resource://com.example.islamic_app/raw/eldosary";
+  static String elhosary = "android.resource://com.example.islamic_app/raw/elhosary";
+  static String elmenshawy = "android.resource://com.example.islamic_app/raw/elmenshawy";
+  static String khalil = "android.resource://com.example.islamic_app/raw/hesham_khalil";
+  static String elsogier = "android.resource://com.example.islamic_app/raw/samer_elsogier";
 }

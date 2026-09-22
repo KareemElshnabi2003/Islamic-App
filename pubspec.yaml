@@ -64,7 +64,6 @@ flutter:
   assets:
     - lib/core/images/
     - lib/core/assets/stories.json
-    - lib/core/audio/
 
 flutter_launcher_icons:
   android: "launcher_icon"
