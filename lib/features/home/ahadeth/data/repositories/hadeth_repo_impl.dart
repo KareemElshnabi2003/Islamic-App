@@ -70,6 +70,16 @@ class HadethRepoImpl extends HadethRepository {
   }
 
 
+  @override
+  Future<Either<ServerException, List<HadethAuthorEntity>>> getCachedHadethAuthor() async {
+    return _getCachedAuthors("CACHED_AUTHORS", fallbackException: ServerException(errorModel: ErrorModel(status: 404, errorMessage: 'لا توجد بيانات محفوظة')));
+  }
+
+  @override
+  Future<Either<ServerException, List<HadethEntity>>> getCachedHadeth({required String author, required int page}) async {
+    return _getCachedHadeth("CACHED_HADETH_${author}_$page", fallbackException: ServerException(errorModel: ErrorModel(status: 404, errorMessage: 'لا توجد بيانات محفوظة')));
+  }
+
   Either<ServerException, List<HadethEntity>> _getCachedHadeth(String key, {required ServerException fallbackException}) {
     final cachedData = CacheHelper.getData(key: key);
     if (cachedData != null) {

@@ -47,35 +47,40 @@ void main() async {
   await flutterLocalNotificationsPlugin.initialize(
     initializationSettings,
     onDidReceiveNotificationResponse: (NotificationResponse response) {
-      if (response.payload == 'adhan_payload') {
-        final context = AppRouter.navigatorKey.currentContext;
-        if (context != null) {
-          GoRouter.of(context).push(
-            Routes.azanAudioScreen,
-            extra: {
-              'selectedSheikhAudio': CacheHelper.getData(key: 'AZAN_AUDIO_PATH') ?? AppAudio.abdelbaset,
-              'prayerName': "الصلاة",
-            },
-          );
-        }
+      if (response.payload != null && response.payload!.startsWith('adhan_payload')) {
+        final parts = response.payload!.split('|');
+        final prayerName = parts.length > 1 ? parts[1] : "الصلاة";
+        final audioPath = parts.length > 2 ? parts[2] : AppAudio.abdelbaset;
+
+        navigatorKey.currentState?.push(
+          MaterialPageRoute(
+            builder: (_) => AdhanAudioScreen(
+              selectedSheikhAudio: audioPath,
+              prayerName: prayerName,
+            ),
+          ),
+        );
       }
     },
   );
 
   final notificationDetails = await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
   if (notificationDetails != null && notificationDetails.didNotificationLaunchApp) {
-    if (notificationDetails.notificationResponse?.payload == 'adhan_payload') {
+    if (notificationDetails.notificationResponse?.payload != null && 
+        notificationDetails.notificationResponse!.payload!.startsWith('adhan_payload')) {
+      final parts = notificationDetails.notificationResponse!.payload!.split('|');
+      final prayerName = parts.length > 1 ? parts[1] : "الصلاة";
+      final audioPath = parts.length > 2 ? parts[2] : AppAudio.abdelbaset;
+
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        final context = AppRouter.navigatorKey.currentContext;
-        if (context != null) {
-          GoRouter.of(context).push(
-            Routes.azanAudioScreen,
-            extra: {
-              'selectedSheikhAudio': CacheHelper.getData(key: 'AZAN_AUDIO_PATH') ?? AppAudio.abdelbaset,
-              'prayerName': "الصلاة",
-            },
-          );
-        }
+        navigatorKey.currentState?.push(
+          MaterialPageRoute(
+            builder: (_) => AdhanAudioScreen(
+              selectedSheikhAudio: audioPath,
+              prayerName: prayerName,
+            ),
+          ),
+        );
       });
     }
   }

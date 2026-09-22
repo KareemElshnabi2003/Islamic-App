@@ -4,4 +4,5 @@ import 'package:islamic_app/features/drawer/videos/domain/entities/video_enttiy.
 
 abstract class VideosRepository {
   Future <Either<ServerException,List<VideoEnttiy>>> getAllVideos();
+  Future <Either<ServerException,List<VideoEnttiy>>> getCachedAllVideos();
 }

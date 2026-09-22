@@ -15,22 +15,51 @@ class AyatCubit extends Cubit<AyatState> {
 
   Future<void> getAyat({required int id}) async {
     currentId = id;
-    emit(AyatLoading());
+    bool hasEmittedCache = false;
 
     await audioService.stopAudio();
 
+    // 1. عرض البيانات المحفوظة محلياً فوراً
+    final cachedResult = await getAyatUseCase.callCached(id: id);
+    cachedResult.fold(
+      (failure) {},
+      (ayat) {
+        if (!isClosed) {
+          emit(AyatSuccess(ayat: ayat, currentSurahId: id));
+          hasEmittedCache = true;
+        }
+      },
+    );
+
+    if (!hasEmittedCache) {
+      emit(AyatLoading());
+    }
+
+    // 2. جلب البيانات الحديثة
     final result = await getAyatUseCase.call(id: id);
     result.fold(
-          (failure) {
-            if (isClosed) return; // السطر ده للحماية
-
-            emit(AyatError(message: failure.errorModel.errorMessage));
-          },
-          (ayat) {
-            if (isClosed) return; // السطر ده للحماية
-
-            emit(AyatSuccess(ayat: ayat, currentSurahId: id));
-          },
+      (failure) {
+        if (isClosed) return;
+        if (!hasEmittedCache) {
+          emit(AyatError(message: failure.errorModel.errorMessage));
+        }
+      },
+      (ayat) {
+        if (isClosed) return;
+        
+        // نحافظ على حالة التشغيل والقارئ المختار لو فيه
+        if (state is AyatSuccess && hasEmittedCache) {
+           final currentState = state as AyatSuccess;
+           emit(AyatSuccess(
+             ayat: ayat, 
+             currentSurahId: id,
+             selectedQariIndex: currentState.selectedQariIndex,
+             isPlaying: currentState.isPlaying
+           ));
+        } else {
+           emit(AyatSuccess(ayat: ayat, currentSurahId: id));
+        }
+      },
     );
   }
 

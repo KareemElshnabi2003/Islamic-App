@@ -16,34 +16,54 @@ class AhadethCubit extends Cubit<AhadethState> {
     if (!isRefresh && state is HadethSuccess && (state as HadethSuccess).hasReachedMax) return;
 
     isFetching = true;
+    bool hasEmittedCache = false;
 
     if (isRefresh) {
       currentPage = 1;
       currentAuthor = author;
-      emit(HadethLoading());
+      
+      // 1. عرض البيانات المحفوظة محلياً فوراً عند التحديث (Refresh)
+      final cachedResult = await getHadethUseCase.callCached(author: currentAuthor, page: currentPage);
+      cachedResult.fold(
+        (failure) {},
+        (newAhadeth) {
+          if (!isClosed) {
+            emit(HadethSuccess(
+              ahadeth: newAhadeth,
+              hasReachedMax: newAhadeth.length < 50,
+            ));
+            hasEmittedCache = true;
+          }
+        },
+      );
+
+      if (!hasEmittedCache) {
+        emit(HadethLoading());
+      }
     } else {
       if (state is HadethSuccess) {
         emit((state as HadethSuccess).copyWith(isFetchingMore: true));
       }
     }
 
+    // 2. جلب البيانات الحديثة
     final result = await getHadethUseCase.call(author: currentAuthor, page: currentPage);
 
     result.fold(
-          (failure) {
-            if (isClosed) return; // السطر ده للحماية
-
-            if (isRefresh) {
-          emit(HadethError(message: failure.errorModel.errorMessage));
+      (failure) {
+        if (isClosed) return;
+        if (isRefresh) {
+          if (!hasEmittedCache) {
+            emit(HadethError(message: failure.errorModel.errorMessage));
+          }
         } else if (state is HadethSuccess) {
           emit((state as HadethSuccess).copyWith(isFetchingMore: false));
         }
         isFetching = false;
       },
-          (newAhadeth) {
-            if (isClosed) return; // السطر ده للحماية
-
-            if (isRefresh) {
+      (newAhadeth) {
+        if (isClosed) return;
+        if (isRefresh) {
           emit(HadethSuccess(
             ahadeth: newAhadeth,
             hasReachedMax: newAhadeth.length < 50,

@@ -56,6 +56,16 @@ class QuranRepoImpl  extends QuranRepository{
       return Left(ServerException(errorModel: ErrorModel(status: 500, errorMessage: 'حدث خطأ في معالجة بيانات السيرفر')));
     }
   }
+  @override
+  Future<Either<ServerException, List<AllSourEntity>>> getCachedAllSour() async {
+    return _getCachedSour("CACHED_QURAN_SOUR", fallbackException: ServerException(errorModel: ErrorModel(status: 404, errorMessage: 'لا توجد بيانات محفوظة')));
+  }
+
+  @override
+  Future<Either<ServerException, AyatEntity>> getCachedAyat({required int id}) async {
+    return _getCachedAyat("CACHED_QURAN_SOUR_$id", fallbackException: ServerException(errorModel: ErrorModel(status: 404, errorMessage: 'لا توجد بيانات محفوظة')));
+  }
+
   Either<ServerException, List<AllSourEntity>> _getCachedSour(String key, {required ServerException fallbackException}) {
     final cachedData = CacheHelper.getData(key: key);
     if (cachedData != null) {

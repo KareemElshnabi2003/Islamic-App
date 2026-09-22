@@ -8,20 +8,37 @@ class HadethAuthorCubit extends Cubit<HadethAuthorState> {
   final GetHadethAuthorUseCase getHadethAuthorUseCase;
   HadethAuthorCubit( {required this.getHadethAuthorUseCase}):super(HadethAuthorInitial());
 
-  Future <void>getAuthors()async{
-    emit(HadethAuthorLoading());
+  Future<void> getAuthors() async {
+    bool hasEmittedCache = false;
 
-    final result=await getHadethAuthorUseCase.call();
-    result.fold(
-          (failure) {
-            if (isClosed) return; // السطر ده للحماية
-
-            emit(HadethAuthorError(message: failure.errorModel.errorMessage));
+    // 1. عرض البيانات المحفوظة محلياً فوراً
+    final cachedResult = await getHadethAuthorUseCase.callCached();
+    cachedResult.fold(
+      (failure) {},
+      (authors) {
+        if (!isClosed) {
+          emit(HadethAuthorSuccess(authors: authors));
+          hasEmittedCache = true;
+        }
       },
-          (authors) {
-            if (isClosed) return; // السطر ده للحماية
+    );
 
-            emit(HadethAuthorSuccess(authors: authors));
+    if (!hasEmittedCache) {
+      emit(HadethAuthorLoading());
+    }
+
+    // 2. جلب البيانات الحديثة
+    final result = await getHadethAuthorUseCase.call();
+    result.fold(
+      (failure) {
+        if (isClosed) return;
+        if (!hasEmittedCache) {
+          emit(HadethAuthorError(message: failure.errorModel.errorMessage));
+        }
+      },
+      (authors) {
+        if (isClosed) return;
+        emit(HadethAuthorSuccess(authors: authors));
       },
     );
   }

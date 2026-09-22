@@ -6,6 +6,7 @@ import 'package:islamic_app/features/home/radio/domain/entities/radio_entity.dar
 
 abstract class RadioRepository {
 
-  Future <Either<ServerException,List<RadioEntity>>> getRadioUrls();
+  Future<Either<ServerException, List<RadioEntity>>> getRadioUrls();
+  Future<Either<ServerException, List<RadioEntity>>> getCachedRadioUrls();
 
 }

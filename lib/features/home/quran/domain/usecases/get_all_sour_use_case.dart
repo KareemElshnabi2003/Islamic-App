@@ -7,7 +7,11 @@ class GetAllSourUseCase {
   final QuranRepository quranRepository;
   const GetAllSourUseCase({required this.quranRepository});
 
-  Future <Either<ServerException ,List<AllSourEntity>>> call()async{
+  Future<Either<ServerException,List<AllSourEntity>>> call()async{
     return await quranRepository.getAllSour();
+  }
+
+  Future<Either<ServerException,List<AllSourEntity>>> callCached()async{
+    return await quranRepository.getCachedAllSour();
   }
 }

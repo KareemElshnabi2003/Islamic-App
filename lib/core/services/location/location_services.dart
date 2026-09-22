@@ -2,6 +2,7 @@ import 'package:geolocator/geolocator.dart';
 
 abstract class LocationService {
   Future<Position?> getCurrentLocation();
+  Future<Position?> getLastKnownLocation();
   Future<bool> checkPermission();
 }
 
@@ -27,6 +28,15 @@ class LocationServiceImpl implements LocationService {
     final hasPermission = await checkPermission();
     if (hasPermission) {
       return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    }
+    return null;
+  }
+
+  @override
+  Future<Position?> getLastKnownLocation() async {
+    final hasPermission = await checkPermission();
+    if (hasPermission) {
+      return await Geolocator.getLastKnownPosition();
     }
     return null;
   }

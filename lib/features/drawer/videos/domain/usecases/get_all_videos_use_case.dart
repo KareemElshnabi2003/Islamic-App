@@ -10,4 +10,8 @@ class GetAllVideosUseCase {
   Future<Either<ServerException,List<VideoEnttiy>>> call()async{
     return await videosRepository.getAllVideos();
   }
+  
+  Future<Either<ServerException,List<VideoEnttiy>>> callCached()async{
+    return await videosRepository.getCachedAllVideos();
+  }
 }

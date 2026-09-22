@@ -7,7 +7,11 @@ class GetRadioUrlsUseCase {
   final RadioRepository _radioRepo;
   GetRadioUrlsUseCase({required this._radioRepo});
 
- Future<Either<ServerException,List<RadioEntity>>>call()async{
-   return await _radioRepo.getRadioUrls();
- }
+  Future<Either<ServerException,List<RadioEntity>>> call() async {
+    return await _radioRepo.getRadioUrls();
+  }
+
+  Future<Either<ServerException,List<RadioEntity>>> callCached() async {
+    return await _radioRepo.getCachedRadioUrls();
+  }
 }

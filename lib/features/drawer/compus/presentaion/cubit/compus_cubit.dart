@@ -10,24 +10,43 @@ class QiblaCubit extends Cubit<QiblaState> {
   QiblaCubit({required this.locationService}) : super(QiblaInitial());
 
   Future<void> getQiblaDirection() async {
-    emit(QiblaLoading());
+    bool hasEmittedCache = false;
+    const double kaabaLat = 21.422487;
+    const double kaabaLng = 39.826206;
 
+    // 1. استخدام آخر موقع معروف لعرض القبلة بشكل فوري (بسرعة فائقة)
+    final lastPosition = await locationService.getLastKnownLocation();
+    if (lastPosition != null && !isClosed) {
+      double bearing = Geolocator.bearingBetween(
+        lastPosition.latitude,
+        lastPosition.longitude,
+        kaabaLat,
+        kaabaLng,
+      );
+      emit(QiblaSuccess(qiblaBearing: bearing));
+      hasEmittedCache = true;
+    }
+
+    if (!hasEmittedCache) {
+      emit(QiblaLoading());
+    }
+
+    // 2. تحديث الموقع بدقة عالية في الخلفية
     final position = await locationService.getCurrentLocation();
 
     if (position != null) {
-      const double kaabaLat = 21.422487;
-      const double kaabaLng = 39.826206;
-
+      if (isClosed) return;
       double bearing = Geolocator.bearingBetween(
         position.latitude,
         position.longitude,
         kaabaLat,
         kaabaLng,
       );
-
       emit(QiblaSuccess(qiblaBearing: bearing));
     } else {
-      emit(QiblaPermissionDenied());
+      if (!hasEmittedCache && !isClosed) {
+        emit(QiblaPermissionDenied());
+      }
     }
   }
 }

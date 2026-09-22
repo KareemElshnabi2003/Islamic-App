@@ -8,20 +8,48 @@ class RadioCubit extends Cubit<RadioState> {
   final AudioService audioService;
   RadioCubit( {required this.getRadioUrlsUseCase, required this.audioService}):super(RadioInitial());
 
-  Future <void>getRadios()async{
-    emit(RadioLoading());
+  Future<void> getRadios() async {
+    bool hasEmittedCache = false;
 
-    final result=await getRadioUrlsUseCase.call();
+    // 1. عرض البيانات المحفوظة محلياً فوراً
+    final cachedResult = await getRadioUrlsUseCase.callCached();
+    cachedResult.fold(
+      (failure) {},
+      (radios) {
+        if (!isClosed) {
+          emit(RadioSuccess(radios: radios));
+          hasEmittedCache = true;
+        }
+      }
+    );
+
+    if (!hasEmittedCache) {
+      emit(RadioLoading());
+    }
+
+    // 2. جلب البيانات الحديثة في الخلفية
+    final result = await getRadioUrlsUseCase.call();
     result.fold(
-          (failure) {
-            if (isClosed) return; // السطر ده للحماية
-
-            emit(RadioError(message: failure.errorModel.errorMessage));
+      (failure) {
+        if (isClosed) return;
+        if (!hasEmittedCache) {
+          emit(RadioError(message: failure.errorModel.errorMessage));
+        }
       },
-          (radios) {
-            if (isClosed) return; // السطر ده للحماية
-
-            emit(RadioSuccess(radios: radios));
+      (radios) {
+        if (isClosed) return;
+        
+        // نحافظ على حالة التشغيل إذا كان هناك רדיו شغال بالفعل
+        if (state is RadioSuccess && hasEmittedCache) {
+           final currentState = state as RadioSuccess;
+           emit(RadioSuccess(
+             radios: radios, 
+             currentIndex: currentState.currentIndex, 
+             isPlaying: currentState.isPlaying
+           ));
+        } else {
+           emit(RadioSuccess(radios: radios));
+        }
       },
     );
   }

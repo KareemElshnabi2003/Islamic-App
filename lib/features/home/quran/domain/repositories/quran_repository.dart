@@ -4,6 +4,9 @@ import 'package:islamic_app/features/home/quran/domain/entities/all_sour_entity.
 import 'package:islamic_app/features/home/quran/domain/entities/ayat_entity.dart';
 
 abstract class QuranRepository {
-  Future <Either<ServerException,List<AllSourEntity>>>  getAllSour();
-  Future <Either <ServerException,AyatEntity>>  getAyat({required int id});
+  Future<Either<ServerException, List<AllSourEntity>>> getAllSour();
+  Future<Either<ServerException, List<AllSourEntity>>> getCachedAllSour();
+  
+  Future<Either<ServerException, AyatEntity>> getAyat({required int id});
+  Future<Either<ServerException, AyatEntity>> getCachedAyat({required int id});
 }

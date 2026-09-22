@@ -9,20 +9,37 @@ class AllSourCubit extends Cubit<AllSourState> {
   AllSourCubit({required this.getAllSourUseCase}) : super(AllSourInitial());
 
   Future<void> getAllSour() async {
-    emit(AllSourLoading());
+    bool hasEmittedCache = false;
 
+    // 1. عرض البيانات المحفوظة محلياً فوراً
+    final cachedResult = await getAllSourUseCase.callCached();
+    cachedResult.fold(
+      (failure) {},
+      (allSour) {
+        if (!isClosed) {
+          emit(AllSourSuccess(allSour: allSour));
+          hasEmittedCache = true;
+        }
+      },
+    );
+
+    if (!hasEmittedCache) {
+      emit(AllSourLoading());
+    }
+
+    // 2. جلب البيانات الحديثة
     final result = await getAllSourUseCase.call();
     result.fold(
-          (failure) {
-            if (isClosed) return; // السطر ده للحماية
-
-            emit(AllSourError(message: failure.errorModel.errorMessage));
-          },
-          (allSour) {
-            if (isClosed) return; // السطر ده للحماية
-
-            emit(AllSourSuccess(allSour: allSour));
-          },
+      (failure) {
+        if (isClosed) return;
+        if (!hasEmittedCache) {
+          emit(AllSourError(message: failure.errorModel.errorMessage));
+        }
+      },
+      (allSour) {
+        if (isClosed) return;
+        emit(AllSourSuccess(allSour: allSour));
+      },
     );
   }
 }

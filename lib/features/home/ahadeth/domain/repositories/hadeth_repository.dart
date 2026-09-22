@@ -4,6 +4,9 @@ import 'package:islamic_app/features/home/ahadeth/domain/entities/hadeth_author_
 import 'package:islamic_app/features/home/ahadeth/domain/entities/hadeth_entity.dart';
 
 abstract class HadethRepository {
-  Future <Either<ServerException,List<HadethAuthorEntity>>> getHadethAuthor();
-  Future <Either<ServerException,List<HadethEntity>>> getHadeth({required String author,required int page});
+  Future<Either<ServerException,List<HadethAuthorEntity>>> getHadethAuthor();
+  Future<Either<ServerException,List<HadethAuthorEntity>>> getCachedHadethAuthor();
+  
+  Future<Either<ServerException,List<HadethEntity>>> getHadeth({required String author, required int page});
+  Future<Either<ServerException,List<HadethEntity>>> getCachedHadeth({required String author, required int page});
 }

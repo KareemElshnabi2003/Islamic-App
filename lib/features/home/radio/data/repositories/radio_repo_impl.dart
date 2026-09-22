@@ -41,6 +41,13 @@ class RadioRepoImpl implements RadioRepository {
     }
   }
 
+  @override
+  Future<Either<ServerException, List<RadioEntity>>> getCachedRadioUrls() async {
+    return _getCachedRadios("CACHED_RADIOS", fallbackException: ServerException(
+      errorModel: ErrorModel(status: 404, errorMessage: 'لا توجد بيانات محفوظة'),
+    ));
+  }
+
   Either<ServerException, List<RadioEntity>> _getCachedRadios(String key, {required ServerException fallbackException}) {
     try {
       final cachedData = CacheHelper.getData(key: key);

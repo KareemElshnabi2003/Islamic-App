@@ -8,18 +8,38 @@ class DoaaCubit extends Cubit<DoaaState> {
   DoaaCubit({required this.getCategoriesUseCase}) : super(DoaaInitial());
 
   Future<void> getAllCategoriesWithDuas() async {
-    emit(DoaaLoading());
+    bool hasEmittedCache = false;
 
+    // 1. عرض البيانات المحفوظة محلياً فوراً
+    final cachedResult = await getCategoriesUseCase.callCached();
+    cachedResult.fold(
+      (failure) {}, 
+      (categories) {
+        if (!isClosed) {
+          emit(DoaaSuccess(categories: categories));
+          hasEmittedCache = true;
+        }
+      }
+    );
+
+    if (!hasEmittedCache) {
+      emit(DoaaLoading());
+    }
+
+    // 2. جلب البيانات الحديثة في الخلفية
     final result = await getCategoriesUseCase.call();
 
     result.fold(
-          (failure) {
+      (failure) {
         if (isClosed) return;
-        emit(DoaaError(message: failure.errorModel.errorMessage));
+        // لا نعرض خطأ للمستخدم إذا كانت البيانات القديمة معروضة بالفعل
+        if (!hasEmittedCache) {
+          emit(DoaaError(message: failure.errorModel.errorMessage));
+        }
       },
-          (categories) {
+      (categories) {
         if (isClosed) return;
-        emit(DoaaSuccess(categories: categories));
+        emit(DoaaSuccess(categories: categories)); // تحديث الشاشة بالبيانات الجديدة
       },
     );
   }

@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:fpdart/fpdart.dart';
+import 'package:islamic_app/core/helper/cache_helper.dart';
 import 'package:islamic_app/core/api/api_consumer.dart';
 import 'package:islamic_app/core/api/end_points.dart';
 import 'package:islamic_app/core/errors/error_model.dart';
@@ -17,22 +19,11 @@ class DoaaRepoImpl extends DoaaRepository {
   Future<Either<ServerException, List<CategoriesEntity>>> getCategoriesWithDuas() async {
     try {
       final response = await api.get(EndPoints.getAllDoaa);
+      
+      // حفظ النسخة المحلية
+      CacheHelper.saveData(key: 'CACHED_DOAA_RESPONSE', value: jsonEncode(response));
 
-      final data = response['data'];
-      final List categoriesJson = data['categories'];
-      final List duasJson = data['duas'];
-
-      List<DoaaModel> allDuas = duasJson.map((e) => DoaaModel.fromJson(e)).toList();
-
-      List<CategoriesModel> categories = categoriesJson.map((catJson) {
-        String catId = catJson['id'];
-
-        List<DoaaModel> catDuas = allDuas.where((dua) => dua.categoryId == catId).toList();
-
-        return CategoriesModel.fromJson(catJson, catDuas);
-      }).toList();
-
-      return Right(categories);
+      return Right(_parseCategories(response['data']));
     } on ServerException catch (e) {
       return Left(e);
     } catch (e) {
@@ -42,5 +33,40 @@ class DoaaRepoImpl extends DoaaRepository {
         ),
       );
     }
+  }
+
+  @override
+  Future<Either<ServerException, List<CategoriesEntity>>> getCachedCategoriesWithDuas() async {
+    try {
+      final cachedStr = CacheHelper.getData(key: 'CACHED_DOAA_RESPONSE');
+      if (cachedStr != null) {
+        final response = jsonDecode(cachedStr);
+        return Right(_parseCategories(response['data']));
+      }
+      return Left(
+        ServerException(
+          errorModel: ErrorModel(status: 404, errorMessage: 'لا توجد بيانات محفوظة'),
+        ),
+      );
+    } catch (e) {
+      return Left(
+        ServerException(
+          errorModel: ErrorModel(status: 500, errorMessage: 'حدث خطأ في قراءة البيانات المحفوظة'),
+        ),
+      );
+    }
+  }
+
+  List<CategoriesEntity> _parseCategories(dynamic data) {
+    final List categoriesJson = data['categories'];
+    final List duasJson = data['duas'];
+
+    List<DoaaModel> allDuas = duasJson.map((e) => DoaaModel.fromJson(e)).toList();
+
+    return categoriesJson.map((catJson) {
+      String catId = catJson['id'];
+      List<DoaaModel> catDuas = allDuas.where((dua) => dua.categoryId == catId).toList();
+      return CategoriesModel.fromJson(catJson, catDuas);
+    }).toList();
   }
 }

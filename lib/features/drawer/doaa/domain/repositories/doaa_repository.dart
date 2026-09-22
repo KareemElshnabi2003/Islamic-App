@@ -4,4 +4,5 @@ import 'package:islamic_app/features/drawer/doaa/domain/entities/categories_enti
 
 abstract class DoaaRepository {
   Future<Either<ServerException, List<CategoriesEntity>>> getCategoriesWithDuas();
+  Future<Either<ServerException, List<CategoriesEntity>>> getCachedCategoriesWithDuas();
 }

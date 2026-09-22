@@ -27,15 +27,19 @@ void playAdhanInBackground() async {
     try {
       final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-      // تكوين قناة الإشعارات بأقصى صلاحيات (عشان تقدر تكسر قفل الشاشة وتنورها)
-      const AndroidNotificationChannel channel = AndroidNotificationChannel(
-        'adhan_channel_id_v3',
+      final String audioPath = prefs.getString('AZAN_AUDIO_PATH') ?? 'lib/core/audio/abdelbaset.mp3';
+      final String soundFileName = audioPath.split('/').last.split('.').first;
+      final String channelId = 'adhan_channel_$soundFileName';
+
+      // تكوين قناة الإشعارات بأقصى صلاحيات مع الصوت المحدد
+      AndroidNotificationChannel channel = AndroidNotificationChannel(
+        channelId,
         'Adhan Channel',
         description: 'قناة إشعارات الأذان',
         importance: Importance.max,
         enableLights: true,
         playSound: true,
-        sound: RawResourceAndroidNotificationSound('adhan'),
+        sound: RawResourceAndroidNotificationSound(soundFileName),
       );
 
       await flutterLocalNotificationsPlugin
@@ -47,33 +51,63 @@ void playAdhanInBackground() async {
 
       await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
-      const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'adhan_channel_id_v3',
+      AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        channelId,
         'Adhan Channel',
         importance: Importance.max,
         priority: Priority.high,
         fullScreenIntent: true, // 👈 السحر اللي بينور الشاشة والموبايل مقفول
         playSound: true,
-        sound: RawResourceAndroidNotificationSound('adhan'),
+        sound: RawResourceAndroidNotificationSound(soundFileName),
       );
 
-      const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+      NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
 
-      // إظهار الإشعار غصب عن النظام مع تمرير الـ payload عشان يوجهنا لشاشة الأذان
-      await flutterLocalNotificationsPlugin.show(
-        1,
-        'حان الآن موعد الصلاة',
-        'افتح التطبيق لإيقاف الأذان',
-        platformChannelSpecifics,
-        payload: 'adhan_payload',
-      );
-
-      // Reschedule the next adhan
+      // استخراج اسم الصلاة القادمة لتمريره في الإشعار
       final localDataSource = AdhanLocalDataSourceImpl(prefs);
       final repo = AdhanTimerRepositoryImpl(localDataSource);
       final getCachedTimes = GetCachedTimesUseCase(repo);
       
+      String currentPrayerName = "الصلاة";
+      
       final result = await getCachedTimes();
+      result.fold((l) => null, (times) {
+        final now = DateTime.now();
+        DateTime parseTime(String timeString, DateTime now) {
+          final cleanTime = timeString.split(' ')[0];
+          final parts = cleanTime.split(':');
+          final hour = int.parse(parts[0]);
+          final minute = int.parse(parts[1]);
+          return DateTime(now.year, now.month, now.day, hour, minute);
+        }
+        
+        Map<String, DateTime> prayerDateTimes = {
+          "الفجر": parseTime(times.fajr, now),
+          "الظهر": parseTime(times.duhr, now),
+          "العصر": parseTime(times.asr, now),
+          "المغرب": parseTime(times.magreb, now),
+          "العشاء": parseTime(times.isha, now),
+        };
+
+        for (var entry in prayerDateTimes.entries) {
+          // Check which prayer is currently happening (within last minute roughly or just triggered)
+          if (now.difference(entry.value).inMinutes.abs() <= 2) {
+             currentPrayerName = entry.key;
+             break;
+          }
+        }
+      });
+
+      // إظهار الإشعار مع تمرير الـ payload عشان يوجهنا لشاشة الأذان بالصلاة الصحيحة
+      await flutterLocalNotificationsPlugin.show(
+        1,
+        'حان الآن موعد صلاة $currentPrayerName',
+        'افتح التطبيق لإيقاف الأذان',
+        platformChannelSpecifics,
+        payload: 'adhan_payload|$currentPrayerName|$audioPath',
+      );
+
+      // Reschedule the next adhan
       result.fold((l) => null, (times) {
         final now = DateTime.now();
         DateTime parseTime(String timeString, DateTime now) {

@@ -7,7 +7,11 @@ class GetAyatUseCase {
   final QuranRepository quranRepository;
   const GetAyatUseCase({required this.quranRepository});
 
-  Future <Either<ServerException ,AyatEntity>> call({required int id })async{
+  Future<Either<ServerException,AyatEntity>> call({required int id})async{
     return await quranRepository.getAyat(id: id);
+  }
+
+  Future<Either<ServerException,AyatEntity>> callCached({required int id})async{
+    return await quranRepository.getCachedAyat(id: id);
   }
 }

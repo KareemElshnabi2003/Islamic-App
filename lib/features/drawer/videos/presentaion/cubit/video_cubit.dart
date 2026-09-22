@@ -7,20 +7,38 @@ class VideoCubit extends Cubit<VideoState> {
   VideoCubit({required this.getAllVideosUseCase}) : super(VideoInitial());
 
   Future<void> getVideos() async {
-    emit(VideoLoading());
+    bool hasEmittedCache = false;
 
-    final result = await getAllVideosUseCase.call();
-    result.fold(
-            (failure) {
-          if (isClosed) return; // السطر ده للحماية
-          emit(VideoError(message: failure.errorModel.errorMessage));
-        },
-            (videos) {
-          if (isClosed) return; // السطر ده للحماية
+    // 1. عرض البيانات المحفوظة محلياً فوراً
+    final cachedResult = await getAllVideosUseCase.callCached();
+    cachedResult.fold(
+      (failure) {}, 
+      (videos) {
+        if (!isClosed) {
           emit(VideoSuccess(videos: videos));
+          hasEmittedCache = true;
         }
+      }
     );
 
+    if (!hasEmittedCache) {
+      emit(VideoLoading());
+    }
+
+    // 2. جلب البيانات الحديثة في الخلفية
+    final result = await getAllVideosUseCase.call();
+    result.fold(
+      (failure) {
+        if (isClosed) return;
+        if (!hasEmittedCache) {
+          emit(VideoError(message: failure.errorModel.errorMessage));
+        }
+      },
+      (videos) {
+        if (isClosed) return;
+        emit(VideoSuccess(videos: videos));
+      }
+    );
   }
 
 }

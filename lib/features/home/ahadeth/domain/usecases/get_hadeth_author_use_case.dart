@@ -8,8 +8,11 @@ class GetHadethAuthorUseCase {
 
   GetHadethAuthorUseCase({required this.hadethRepositories});
 
-  Future <Either<ServerException,List<HadethAuthorEntity>>> call(){
-    return hadethRepositories.getHadethAuthor();
-}
+  Future<Either<ServerException,List<HadethAuthorEntity>>> call() async {
+    return await hadethRepositories.getHadethAuthor();
+  }
 
+  Future<Either<ServerException,List<HadethAuthorEntity>>> callCached() async {
+    return await hadethRepositories.getCachedHadethAuthor();
+  }
 }

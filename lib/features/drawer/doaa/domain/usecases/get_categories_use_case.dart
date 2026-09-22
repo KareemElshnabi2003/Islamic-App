@@ -11,4 +11,8 @@ class GetCategoriesUseCase {
   Future<Either<ServerException, List<CategoriesEntity>>> call() async {
     return await doaaRepository.getCategoriesWithDuas();
   }
+
+  Future<Either<ServerException, List<CategoriesEntity>>> callCached() async {
+    return await doaaRepository.getCachedCategoriesWithDuas();
+  }
 }
