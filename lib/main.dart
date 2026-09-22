@@ -52,14 +52,16 @@ void main() async {
         final prayerName = parts.length > 1 ? parts[1] : "الصلاة";
         final audioPath = parts.length > 2 ? parts[2] : AppAudio.abdelbaset;
 
-        navigatorKey.currentState?.push(
-          MaterialPageRoute(
-            builder: (_) => AdhanAudioScreen(
-              selectedSheikhAudio: audioPath,
-              prayerName: prayerName,
-            ),
-          ),
-        );
+        final context = AppRouter.navigatorKey.currentContext;
+        if (context != null) {
+          GoRouter.of(context).push(
+            Routes.azanAudioScreen,
+            extra: {
+              'selectedSheikhAudio': audioPath,
+              'prayerName': prayerName,
+            },
+          );
+        }
       }
     },
   );
@@ -73,14 +75,16 @@ void main() async {
       final audioPath = parts.length > 2 ? parts[2] : AppAudio.abdelbaset;
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        navigatorKey.currentState?.push(
-          MaterialPageRoute(
-            builder: (_) => AdhanAudioScreen(
-              selectedSheikhAudio: audioPath,
-              prayerName: prayerName,
-            ),
-          ),
-        );
+        final context = AppRouter.navigatorKey.currentContext;
+        if (context != null) {
+          GoRouter.of(context).push(
+            Routes.azanAudioScreen,
+            extra: {
+              'selectedSheikhAudio': audioPath,
+              'prayerName': prayerName,
+            },
+          );
+        }
       });
     }
   }
