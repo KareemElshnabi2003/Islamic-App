@@ -1,32 +1,28 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:islamic_app/core/routing/routes.dart';
-
-import 'package:islamic_app/main.dart';
+import 'package:islamic_app/features/drawer/videos/domain/entities/single_video_entity.dart';
+import 'package:islamic_app/features/drawer/videos/domain/entities/video_entity.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(
-        IslamicApp(initialRoute: Routes.splashScreen));
+  test('VideoEntity model equality test', () {
+    const video1 = SingleVideoEntity(
+      id: 1,
+      type: 1,
+      videoUrl: 'https://example.com/video.mp4',
+      img: 'https://example.com/thumb.jpg',
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    const entity1 = VideoEntity(
+      id: 10,
+      name: 'سورة الفاتحة',
+      videos: [video1],
+    );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    const entity2 = VideoEntity(
+      id: 10,
+      name: 'سورة الفاتحة',
+      videos: [video1],
+    );
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(entity1, equals(entity2));
   });
 }

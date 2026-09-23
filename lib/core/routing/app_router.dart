@@ -2,43 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:islamic_app/core/di/service_locator.dart';
-import 'package:islamic_app/features/drawer/azan/presentaion/screens/azan_audio_screen.dart';
-import 'package:islamic_app/features/drawer/doaa/presentaion/cubit/doaa_cubit.dart';
-import 'package:islamic_app/features/drawer/doaa/presentaion/cubit/oaa_reader_cubit.dart';
-import 'package:islamic_app/features/drawer/doaa/presentaion/screens/doaa_cat_screen.dart';
-import 'package:islamic_app/features/drawer/doaa/presentaion/screens/doaa_screen.dart';
-import 'package:islamic_app/features/drawer/stories/presentaion/screens/stories_screen.dart';
-import 'package:islamic_app/features/drawer/stories/presentaion/screens/story_info_screen.dart';
+import 'package:islamic_app/features/drawer/azan/presentation/screens/azan_audio_screen.dart';
+import 'package:islamic_app/features/drawer/doaa/presentation/cubit/doaa_cubit.dart';
+import 'package:islamic_app/features/drawer/doaa/presentation/cubit/doaa_reader_cubit.dart';
+import 'package:islamic_app/features/drawer/doaa/presentation/screens/doaa_cat_screen.dart';
+import 'package:islamic_app/features/drawer/doaa/presentation/screens/doaa_screen.dart';
+import 'package:islamic_app/features/drawer/stories/presentation/screens/stories_screen.dart';
+import 'package:islamic_app/features/drawer/stories/presentation/screens/story_info_screen.dart';
 import 'package:islamic_app/features/drawer/videos/domain/entities/single_video_entity.dart';
-import 'package:islamic_app/features/drawer/videos/presentaion/cubit/video_cubit.dart';
-import 'package:islamic_app/features/drawer/videos/presentaion/cubit/video_player_cubit.dart';
-import 'package:islamic_app/features/drawer/videos/presentaion/screens/video_type_screen.dart';
-import 'package:islamic_app/features/drawer/videos/presentaion/screens/videos_screen.dart';
-import 'package:islamic_app/features/drawer/zekr/presentaion/cubit/zekr_notify_cubit.dart';
+import 'package:islamic_app/features/drawer/videos/presentation/cubit/video_cubit.dart';
+import 'package:islamic_app/features/drawer/videos/presentation/cubit/video_player_cubit.dart';
+import 'package:islamic_app/features/drawer/videos/presentation/screens/video_type_screen.dart';
+import 'package:islamic_app/features/drawer/videos/presentation/screens/videos_screen.dart';
+import 'package:islamic_app/features/drawer/zekr/presentation/cubit/zekr_notify_cubit.dart';
 
-import '../../features/drawer/azan/presentaion/screens/azan_screen.dart'; // تأكد إن دي اللي فيها AdhanSettingsScreen
-import '../../features/drawer/compus/presentaion/screens/compus_screen.dart';
-import '../../features/drawer/times/presentaion/screens/times_screen.dart';
-import '../../features/drawer/zekr/presentaion/screens/notify_zekr_screen.dart';
-import '../../features/home/ahadeth/presentaion/screens/ahadeth_screen.dart';
-import '../../features/home/ahadeth/presentaion/screens/hadeth_screen.dart';
-import '../../features/home/azkar/presentaion/screens/azkar_screen.dart';
-import '../../features/home/quran/presentaion/screens/home_page_screen.dart';
-import '../../features/home/quran/presentaion/screens/soura_screen.dart';
-import '../../features/home/radio/presentaion/screens/radio_screen.dart';
-import '../../features/main/presentaion/screens/main_layout_screen.dart';
-import '../../features/splash/splash_screen.dart';
-import 'routes.dart';
-
-import '../../features/drawer/stories/presentaion/cubit/story_cubit.dart';
+import 'package:islamic_app/features/drawer/azan/presentation/screens/azan_screen.dart';
+import 'package:islamic_app/features/drawer/compus/presentation/screens/compus_screen.dart';
+import 'package:islamic_app/features/drawer/times/presentation/screens/times_screen.dart';
+import 'package:islamic_app/features/drawer/zekr/presentation/screens/notify_zekr_screen.dart';
+import 'package:islamic_app/features/home/ahadeth/presentation/screens/ahadeth_screen.dart';
+import 'package:islamic_app/features/home/ahadeth/presentation/screens/hadeth_screen.dart';
+import 'package:islamic_app/features/home/azkar/presentation/screens/azkar_screen.dart';
+import 'package:islamic_app/features/home/quran/presentation/screens/home_page_screen.dart';
+import 'package:islamic_app/features/home/quran/presentation/screens/soura_screen.dart';
+import 'package:islamic_app/features/home/radio/presentation/screens/radio_screen.dart';
+import 'package:islamic_app/features/main/presentation/screens/main_layout_screen.dart';
+import 'package:islamic_app/features/splash/splash_screen.dart';
+import 'package:islamic_app/features/drawer/stories/presentation/cubit/story_cubit.dart';
 import 'package:islamic_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:islamic_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:islamic_app/features/auth/presentation/screens/verify_code_screen.dart';
+import 'routes.dart';
 
 class AppRouter {
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static GoRouter? _router;
 
   static GoRouter getRouter(String initialLocation) {
+    return _router ??= _createRouter(initialLocation);
+  }
+
+  static GoRouter _createRouter(String initialLocation) {
     return GoRouter(
       navigatorKey: navigatorKey,
       initialLocation: initialLocation,

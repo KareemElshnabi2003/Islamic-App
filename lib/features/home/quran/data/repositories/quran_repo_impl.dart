@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 
-import 'package:fpdart/src/either.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:islamic_app/core/api/api_consumer.dart';
 import 'package:islamic_app/core/api/end_points.dart';
 import 'package:islamic_app/core/errors/error_model.dart';

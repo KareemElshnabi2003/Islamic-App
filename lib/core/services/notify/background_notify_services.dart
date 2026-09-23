@@ -56,7 +56,7 @@ void playAdhanInBackground() async {
         'Adhan Channel',
         importance: Importance.max,
         priority: Priority.high,
-        fullScreenIntent: true, // 👈 السحر اللي بينور الشاشة والموبايل مقفول
+        fullScreenIntent: true,
         playSound: true,
         sound: RawResourceAndroidNotificationSound(soundFileName),
       );

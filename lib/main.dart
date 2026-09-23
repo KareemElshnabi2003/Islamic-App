@@ -5,15 +5,15 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:go_router/go_router.dart';
-import 'package:permission_handler/permission_handler.dart'; // 👈 استدعاء الأذونات
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:islamic_app/core/constant/app_audio.dart';
 import 'package:islamic_app/core/network/network_cubit.dart';
 import 'package:islamic_app/core/network/network_state.dart';
 import 'package:islamic_app/core/helper/cache_helper.dart';
 import 'package:islamic_app/core/routing/routes.dart';
-import 'package:islamic_app/features/drawer/azan/presentaion/cubit/azan_cubit.dart';
-import 'package:islamic_app/features/drawer/azan/presentaion/cubit/azan_state.dart';
+import 'package:islamic_app/features/drawer/azan/presentation/cubit/azan_cubit.dart';
+import 'package:islamic_app/features/drawer/azan/presentation/cubit/azan_state.dart';
 import 'package:screen_go/screen_go.dart';
 
 import 'package:islamic_app/core/routing/app_router.dart';

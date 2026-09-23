@@ -1,7 +1,7 @@
 import 'package:islamic_app/features/drawer/videos/data/model/single_video_model.dart';
-import 'package:islamic_app/features/drawer/videos/domain/entities/video_enttiy.dart';
+import 'package:islamic_app/features/drawer/videos/domain/entities/video_entity.dart';
 
-class VideoModel extends VideoEnttiy {
+class VideoModel extends VideoEntity {
   const VideoModel({required super.id,  required super.name, required super.videos});
 
   factory VideoModel.fromJson(Map<String,dynamic> json){

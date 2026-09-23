@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:islamic_app/core/errors/server_exceptions.dart';
 import 'package:islamic_app/features/home/radio/domain/entities/radio_entity.dart';
-import 'package:islamic_app/features/home/radio/domain/repositories/Radio_repository.dart';
+import 'package:islamic_app/features/home/radio/domain/repositories/radio_repository.dart';
 
 class GetRadioUrlsUseCase {
   final RadioRepository _radioRepo;

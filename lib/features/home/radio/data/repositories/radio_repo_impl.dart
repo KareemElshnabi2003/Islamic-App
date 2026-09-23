@@ -10,7 +10,7 @@ import 'package:islamic_app/core/errors/server_exceptions.dart';
 import 'package:islamic_app/core/helper/cache_helper.dart';
 import 'package:islamic_app/features/home/radio/data/model/radio_model.dart';
 import 'package:islamic_app/features/home/radio/domain/entities/radio_entity.dart';
-import 'package:islamic_app/features/home/radio/domain/repositories/Radio_repository.dart';
+import 'package:islamic_app/features/home/radio/domain/repositories/radio_repository.dart';
 
 class RadioRepoImpl implements RadioRepository {
   final ApiConsumer api;

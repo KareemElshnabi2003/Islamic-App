@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:islamic_app/features/drawer/azan/data/repositories/azan_time_repo_impl.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // 👈 استدعاء SharedPreferences
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:islamic_app/features/auth/data/datasources/auth_remote_data_source.dart';
@@ -19,60 +19,56 @@ import 'package:islamic_app/core/services/location/location_services.dart';
 import 'package:islamic_app/core/services/notify/firebase_messaging_service.dart';
 import 'package:islamic_app/core/services/notify/local_notify_service.dart';
 import 'package:islamic_app/core/services/video/video_services.dart';
-import 'package:islamic_app/features/drawer/compus/presentaion/cubit/compus_cubit.dart';
+import 'package:islamic_app/features/drawer/compus/presentation/cubit/compus_cubit.dart';
 import 'package:islamic_app/features/drawer/doaa/data/repositories/doaa_repo_impl.dart';
 import 'package:islamic_app/features/drawer/doaa/domain/repositories/doaa_repository.dart';
 import 'package:islamic_app/features/drawer/doaa/domain/usecases/get_categories_use_case.dart';
-import 'package:islamic_app/features/drawer/doaa/presentaion/cubit/doaa_cubit.dart';
-import 'package:islamic_app/features/drawer/doaa/presentaion/cubit/oaa_reader_cubit.dart';
+import 'package:islamic_app/features/drawer/doaa/presentation/cubit/doaa_cubit.dart';
+import 'package:islamic_app/features/drawer/doaa/presentation/cubit/doaa_reader_cubit.dart';
 import 'package:islamic_app/features/drawer/stories/data/repositories/story_repo_impl.dart';
 import 'package:islamic_app/features/drawer/stories/domain/repositories/story_repository.dart';
 import 'package:islamic_app/features/drawer/stories/domain/usecases/get_story_use_case.dart';
-import 'package:islamic_app/features/drawer/stories/presentaion/cubit/story_cubit.dart';
+import 'package:islamic_app/features/drawer/stories/presentation/cubit/story_cubit.dart';
 import 'package:islamic_app/features/drawer/times/data/repositories/times_repo_impl.dart';
 import 'package:islamic_app/features/drawer/times/domain/repositories/times_repository.dart';
 import 'package:islamic_app/features/drawer/times/domain/usecases/get_times_use_case.dart';
-import 'package:islamic_app/features/drawer/times/presentaion/cubit/times_cubit.dart';
+import 'package:islamic_app/features/drawer/times/presentation/cubit/times_cubit.dart';
 import 'package:islamic_app/features/drawer/videos/data/repositories/videos_repo_impl.dart';
 import 'package:islamic_app/features/drawer/videos/domain/repositories/videos_repository.dart';
 import 'package:islamic_app/features/drawer/videos/domain/usecases/get_all_videos_use_case.dart';
-import 'package:islamic_app/features/drawer/videos/presentaion/cubit/video_cubit.dart';
-import 'package:islamic_app/features/drawer/videos/presentaion/cubit/video_player_cubit.dart';
+import 'package:islamic_app/features/drawer/videos/presentation/cubit/video_cubit.dart';
+import 'package:islamic_app/features/drawer/videos/presentation/cubit/video_player_cubit.dart';
 import 'package:islamic_app/features/drawer/zekr/data/repositories/zekr_notify_repo_impl.dart';
 import 'package:islamic_app/features/drawer/zekr/domain/repositories/zekr_notify_repository.dart';
 import 'package:islamic_app/features/drawer/zekr/domain/usecases/get_zekr_use_case.dart';
 import 'package:islamic_app/features/drawer/zekr/domain/usecases/save_zekr_use_case.dart';
-import 'package:islamic_app/features/drawer/zekr/presentaion/cubit/zekr_notify_cubit.dart';
+import 'package:islamic_app/features/drawer/zekr/presentation/cubit/zekr_notify_cubit.dart';
 import 'package:islamic_app/features/home/ahadeth/data/repositories/hadeth_repo_impl.dart';
 import 'package:islamic_app/features/home/ahadeth/domain/repositories/hadeth_repository.dart';
 import 'package:islamic_app/features/home/ahadeth/domain/usecases/get_hadeth_author_use_case.dart';
 import 'package:islamic_app/features/home/ahadeth/domain/usecases/get_hadeth_use_case.dart';
-import 'package:islamic_app/features/home/ahadeth/presentaion/cubit/ahadeth_cubit.dart';
-import 'package:islamic_app/features/home/ahadeth/presentaion/cubit/hadeth_author_cubit.dart';
+import 'package:islamic_app/features/home/ahadeth/presentation/cubit/ahadeth_cubit.dart';
+import 'package:islamic_app/features/home/ahadeth/presentation/cubit/hadeth_author_cubit.dart';
 import 'package:islamic_app/features/home/quran/data/repositories/quran_repo_impl.dart';
 import 'package:islamic_app/features/home/quran/domain/repositories/quran_repository.dart';
 import 'package:islamic_app/features/home/quran/domain/usecases/get_all_sour_use_case.dart';
 import 'package:islamic_app/features/home/quran/domain/usecases/get_ayat_use_case.dart';
-import 'package:islamic_app/features/home/quran/presentaion/cubit/all_sour_cubit.dart';
-import 'package:islamic_app/features/home/quran/presentaion/cubit/ayat_cubit.dart';
+import 'package:islamic_app/features/home/quran/presentation/cubit/all_sour_cubit.dart';
+import 'package:islamic_app/features/home/quran/presentation/cubit/ayat_cubit.dart';
 import 'package:islamic_app/features/home/radio/data/repositories/radio_repo_impl.dart';
-import 'package:islamic_app/features/home/radio/domain/repositories/Radio_repository.dart';
+import 'package:islamic_app/features/home/radio/domain/repositories/radio_repository.dart';
 import 'package:islamic_app/features/home/radio/domain/usecases/get_radio_urls_use_case.dart';
-import 'package:islamic_app/features/home/radio/presentaion/cubit/radio_cubit.dart';
+import 'package:islamic_app/features/home/radio/presentation/cubit/radio_cubit.dart';
 
-// 👈 استدعاءات ميزة الأذان
 import 'package:islamic_app/features/drawer/azan/data/datasource/azan_local_data_source.dart';
 import 'package:islamic_app/features/drawer/azan/domain/repositories/azan_repository.dart';
 import 'package:islamic_app/features/drawer/azan/domain/usecases/get_cached_time_azan_use_case.dart';
-import 'package:islamic_app/features/drawer/azan/presentaion/cubit/azan_cubit.dart';
-import 'package:islamic_app/features/drawer/azan/presentaion/cubit/azan_audio_cubit.dart';
+import 'package:islamic_app/features/drawer/azan/presentation/cubit/azan_cubit.dart';
+import 'package:islamic_app/features/drawer/azan/presentation/cubit/azan_audio_cubit.dart';
 
 final sl = GetIt.instance;
 
-// 👈 غيرنا دي لـ async عشان نقدر نـ await الـ SharedPreferences
 Future<void> setupServiceLocator() async {
-
-  // 👈 تعريف SharedPreferences في الـ GetIt
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
@@ -149,26 +145,14 @@ Future<void> setupServiceLocator() async {
     saveZekrSettingsUseCase: sl(),
   ));
 
-  // =====================================
-  // 👇 إضافات ميزة الأذان (Azan)
-  // =====================================
-
-  // Data Source
+  // Azan
   sl.registerLazySingleton<BaseAdhanLocalDataSource>(() => AdhanLocalDataSourceImpl(sl()));
-
-  // Repository
   sl.registerLazySingleton<BaseAdhanTimerRepository>(() => AdhanTimerRepositoryImpl(sl()));
-
-  // Use Case
   sl.registerLazySingleton<GetCachedTimesUseCase>(() => GetCachedTimesUseCase(sl()));
-
-  // Cubits
   sl.registerLazySingleton<AdhanTimerCubit>(() => AdhanTimerCubit(sl()));
   sl.registerFactory<AdhanAudioCubit>(() => AdhanAudioCubit(sl()));
 
-  // =====================================
-  // 👇 إضافات ميزة تسجيل الدخول (Auth)
-  // =====================================
+  // Auth
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(firebaseAuth: sl()));
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(remoteDataSource: sl()));

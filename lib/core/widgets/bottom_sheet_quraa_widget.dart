@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:islamic_app/core/widgets/text_normal_widget.dart';
 import 'package:screen_go/extensions/responsive_nums.dart';
-import 'package:islamic_app/features/home/quran/presentaion/cubit/ayat_cubit.dart';
-import 'package:islamic_app/features/home/quran/presentaion/cubit/ayat_state.dart';
+import 'package:islamic_app/features/home/quran/presentation/cubit/ayat_cubit.dart';
+import 'package:islamic_app/features/home/quran/presentation/cubit/ayat_state.dart';
 
 void bottomSheetQuraaWidget({
   required BuildContext context,

@@ -11,7 +11,10 @@ class NetworkCubit extends Cubit<NetworkStatus> {
 
   StreamSubscription<InternetConnectionStatus>? _connectionSubscription;
 
-  NetworkCubit(this.networkInfo) : super(NetworkStatus.initial);
+  NetworkCubit(this.networkInfo) : super(NetworkStatus.initial) {
+    checkConnection();
+    startListening();
+  }
 
   Future<void> checkConnection() async {
     final isConnected = await networkInfo.isConnected;

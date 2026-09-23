@@ -9,7 +9,9 @@ abstract class FirebaseNotifyService {
 class FirebaseNotifyServiceImpl implements FirebaseNotifyService {
   @override
   Future<void> initFirebase() async {
-    await Firebase.initializeApp();
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp();
+    }
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
     await messaging.requestPermission();

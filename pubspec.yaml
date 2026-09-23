@@ -21,35 +21,32 @@ dependencies:
   screen_go: ^1.1.8
   permission_handler: ^12.0.3
   intl: ^0.20.3
+  # Media & Utilities
   video_player: ^2.14.0
-  chewie: ^1.14.1
   path_provider: ^2.1.6
-  gal: ^2.3.3
-  url_launcher: ^6.3.2
   internet_connection_checker: ^3.0.1
-  google_maps_flutter: ^2.18.0
   flutter_compass: ^0.8.1
+
   # Audio
   just_audio: ^0.9.38
+  just_audio_background: ^0.0.1-beta.17
 
   # Notifications
   flutter_local_notifications: ^17.1.2
   firebase_core: ^3.0.0
   firebase_messaging: ^15.0.0
+  firebase_auth: ^5.7.0
 
-  # Location & Map
+  # Location & Times
   geolocator: ^11.0.0
-  equatable: ^2.1.0
-  hijri: ^3.0.0      # للتاريخ الهجري الدقيق
   geocoding: ^3.0.0
+  equatable: ^2.1.0
+  hijri: ^3.0.0
   android_alarm_manager_plus: ^4.0.4
-  animate_do: ^3.3.4
+
+  # Caching
   dio_cache_interceptor: ^3.5.1
   dio_cache_interceptor_hive_store: ^4.0.0
-  just_audio_background: ^0.0.1-beta.17
-  dio_cache_interceptor_file_store: ^1.2.3
-  firebase_auth: ^5.7.0
-cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:

@@ -17,7 +17,6 @@ subprojects {
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
 
-// 💡 الترتيب هنا هو السر: بنحط كود الإجبار "قبل" سطر الـ evaluationDependsOn
 subprojects {
     afterEvaluate {
         if (project.plugins.hasPlugin("com.android.library")) {

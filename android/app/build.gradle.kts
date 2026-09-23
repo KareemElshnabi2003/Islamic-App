@@ -22,8 +22,6 @@ android {
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
-
-        // 💡 خلينا التارجت 36 برضه عشان التوافق التام
         targetSdk = 34
 
         versionCode = flutter.versionCode
@@ -34,8 +32,10 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             signingConfig = signingConfigs.getByName("debug")
         }
     }
