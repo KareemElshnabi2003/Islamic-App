@@ -36,6 +36,7 @@ import 'routes.dart';
 
 class AppRouter {
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   static GoRouter? _router;
 
   static GoRouter getRouter(String initialLocation) {

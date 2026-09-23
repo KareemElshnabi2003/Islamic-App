@@ -127,7 +127,7 @@ class IslamicApp extends StatelessWidget {
               BlocListener<NetworkCubit, NetworkStatus>(
                 listener: (context, networkStatus) {
                   if (networkStatus == NetworkStatus.disconnected) {
-                    ScaffoldMessenger.of(context).showSnackBar(
+                    AppRouter.scaffoldMessengerKey.currentState?.showSnackBar(
                       const SnackBar(
                         content: Text(
                           'لا يوجد اتصال بالإنترنت. تتصفح الآن البيانات المحفوظة.',
@@ -162,6 +162,7 @@ class IslamicApp extends StatelessWidget {
                 return MaterialApp.router(
                   debugShowCheckedModeBanner: false,
                   title: 'Islamic App',
+                  scaffoldMessengerKey: AppRouter.scaffoldMessengerKey,
                   routerConfig: AppRouter.getRouter(initialRoute),
                   theme: AppTheme.lightTheme,
                   darkTheme: AppTheme.darkTheme,
