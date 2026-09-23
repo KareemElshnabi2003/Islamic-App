@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "705362541302",
+    "project_id": "islamic-app-dcd4d",
+    "storage_bucket": "islamic-app-dcd4d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705362541302:android:b6388154e68439afde0ad7",
+        "android_client_info": {
+          "package_name": "com.example.islamic_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKCqtUrVBnQ_7R1ujuh0XfZ-bJ8f9vz3s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

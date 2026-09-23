@@ -6,6 +6,8 @@ import 'package:islamic_app/core/widgets/text_normal_widget.dart';
 import 'package:screen_go/extensions/responsive_nums.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:islamic_app/core/routing/routes.dart';
 import 'package:islamic_app/core/theme/theme_cubit.dart';
 import 'package:islamic_app/core/widgets/drawer_widget.dart';
@@ -41,6 +43,7 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
               onPressTheme: () { context.read<ThemeCubit>().toggleTheme(); },
               onPressTimes: () { context.push(Routes.timesScreen); },
               onPressZekr: () { context.push(Routes.notifyZekrScreen); },
+              onPressLogout: () => _showLogoutDialog(context),
             )
         ),
         backgroundColor: theme.scaffoldBackgroundColor,
@@ -123,5 +126,76 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
       ),
     );
 
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = context.read<ThemeCubit>().state == ThemeMode.dark;
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: AlertDialog(
+            backgroundColor: isDarkMode
+                ? const Color(0xFF141A2E)
+                : Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              side: BorderSide(
+                color: theme.dividerColor.withAlpha(80),
+                width: 1.5,
+              ),
+            ),
+            title: Text(
+              "تسجيل الخروج",
+              style: GoogleFonts.elMessiri(
+                fontWeight: FontWeight.bold,
+                fontSize: 18.sp,
+                color: isDarkMode ? const Color(0xFFFACC1D) : const Color(0xFFB7935F),
+              ),
+            ),
+            content: Text(
+              "هل أنت متأكد من رغبتك في تسجيل الخروج من التطبيق؟",
+              style: GoogleFonts.elMessiri(
+                fontSize: 14.sp,
+                color: isDarkMode ? Colors.white70 : const Color(0xFF444444),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: Text(
+                  "إلغاء",
+                  style: GoogleFonts.elMessiri(
+                    color: isDarkMode ? Colors.white60 : Colors.grey.shade600,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red.shade700,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                onPressed: () async {
+                  Navigator.of(dialogContext).pop();
+                  await FirebaseAuth.instance.signOut();
+                  if (context.mounted) {
+                    context.go(Routes.loginScreen);
+                  }
+                },
+                child: Text(
+                  "تسجيل الخروج",
+                  style: GoogleFonts.elMessiri(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

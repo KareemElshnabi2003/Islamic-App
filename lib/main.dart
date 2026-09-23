@@ -17,14 +17,29 @@ import 'package:islamic_app/features/drawer/azan/presentaion/cubit/azan_state.da
 import 'package:screen_go/screen_go.dart';
 
 import 'package:islamic_app/core/routing/app_router.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:islamic_app/core/theme/app_theme.dart';
 import 'package:islamic_app/core/theme/theme_cubit.dart';
 import 'package:islamic_app/core/di/service_locator.dart';
 
+import 'package:flutter/foundation.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // طلب الأذونات المهمة لتشغيل الأذان في الخلفية (أندرويد 12 و 13 وأعلى)
+  try {
+    await Firebase.initializeApp();
+    if (kDebugMode) {
+      await FirebaseAuth.instance.setSettings(
+        appVerificationDisabledForTesting: true,
+      );
+    }
+  } catch (e) {
+    debugPrint("Firebase init error: $e");
+  }
+  
+
   await Permission.notification.request();
   await Permission.scheduleExactAlarm.request();
 

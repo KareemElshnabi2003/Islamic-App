@@ -4,6 +4,11 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:islamic_app/features/drawer/azan/data/repositories/azan_time_repo_impl.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // 👈 استدعاء SharedPreferences
 import 'package:path_provider/path_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:islamic_app/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:islamic_app/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:islamic_app/features/auth/domain/repositories/auth_repository.dart';
+import 'package:islamic_app/features/auth/presentation/cubit/auth_cubit.dart';
 
 import 'package:islamic_app/core/api/api_consumer.dart';
 import 'package:islamic_app/core/api/dio_consumer.dart';
@@ -160,4 +165,12 @@ Future<void> setupServiceLocator() async {
   // Cubits
   sl.registerLazySingleton<AdhanTimerCubit>(() => AdhanTimerCubit(sl()));
   sl.registerFactory<AdhanAudioCubit>(() => AdhanAudioCubit(sl()));
+
+  // =====================================
+  // 👇 إضافات ميزة تسجيل الدخول (Auth)
+  // =====================================
+  sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
+  sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(firebaseAuth: sl()));
+  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(remoteDataSource: sl()));
+  sl.registerFactory<AuthCubit>(() => AuthCubit(authRepository: sl()));
 }

@@ -16,8 +16,6 @@ import 'package:islamic_app/features/drawer/videos/presentaion/screens/video_typ
 import 'package:islamic_app/features/drawer/videos/presentaion/screens/videos_screen.dart';
 import 'package:islamic_app/features/drawer/zekr/presentaion/cubit/zekr_notify_cubit.dart';
 
-// استدعاء الكيوبيت الخاص بالعداد
-import '../../features/drawer/azan/presentaion/cubit/azan_cubit.dart';
 import '../../features/drawer/azan/presentaion/screens/azan_screen.dart'; // تأكد إن دي اللي فيها AdhanSettingsScreen
 import '../../features/drawer/compus/presentaion/screens/compus_screen.dart';
 import '../../features/drawer/times/presentaion/screens/times_screen.dart';
@@ -33,6 +31,9 @@ import '../../features/splash/splash_screen.dart';
 import 'routes.dart';
 
 import '../../features/drawer/stories/presentaion/cubit/story_cubit.dart';
+import 'package:islamic_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:islamic_app/features/auth/presentation/screens/login_screen.dart';
+import 'package:islamic_app/features/auth/presentation/screens/verify_code_screen.dart';
 
 class AppRouter {
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -44,7 +45,29 @@ class AppRouter {
       routes: [
         GoRoute(
           path: Routes.splashScreen,
-          builder: (context, state) => SplashScreen(),
+          builder: (context, state) => const SplashScreen(),
+        ),
+        GoRoute(
+          path: Routes.loginScreen,
+          builder: (context, state) => BlocProvider<AuthCubit>(
+            create: (context) => sl<AuthCubit>(),
+            child: const LoginScreen(),
+          ),
+        ),
+        GoRoute(
+          path: Routes.verifyCodeScreen,
+          builder: (context, state) {
+            final args = (state.extra as Map<String, dynamic>?) ?? {};
+            final verificationId = args['verificationId'] as String? ?? "";
+            final phoneNumber = args['phoneNumber'] as String? ?? "";
+            return BlocProvider<AuthCubit>(
+              create: (context) => sl<AuthCubit>(),
+              child: VerifyCodeScreen(
+                verificationId: verificationId,
+                phoneNumber: phoneNumber,
+              ),
+            );
+          },
         ),
         GoRoute(
           path: Routes.souraScreen,

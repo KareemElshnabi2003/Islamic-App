@@ -18,5 +18,6 @@ class Routes {
   static const String videosScreen = '/VideosScreen';//home screen
   static const String videosTypeScreen = '/VideosTypeScreen';//home screen
   static const String doaaDetailsScreen = '/DoaaDetailsScreen';//home screen
-
+  static const String loginScreen = '/LoginScreen'; // login
+  static const String verifyCodeScreen = '/VerifyCodeScreen'; // verify code
 }

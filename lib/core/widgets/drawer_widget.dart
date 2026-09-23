@@ -15,8 +15,23 @@ class DrawerWidget extends StatelessWidget {
   final void Function(bool) onChangeTheme;
   final void Function() onPressVideos;
   final void Function() onPressDoaa;
+  final void Function()? onPressLogout;
   final bool val;
-  const DrawerWidget({super.key, required this.theme, required this.onPressTimes, required this.onPressStories, required this.onPressAzan, required this.onPressZekr, required this.onPressTheme, required this.onChangeTheme, required this.val, required this.onPressCompus, required this.onPressVideos, required this.onPressDoaa});
+  const DrawerWidget({
+    super.key,
+    required this.theme,
+    required this.onPressTimes,
+    required this.onPressStories,
+    required this.onPressAzan,
+    required this.onPressZekr,
+    required this.onPressTheme,
+    required this.onChangeTheme,
+    required this.val,
+    required this.onPressCompus,
+    required this.onPressVideos,
+    required this.onPressDoaa,
+    this.onPressLogout,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +101,24 @@ class DrawerWidget extends StatelessWidget {
               weight: FontWeight.bold,
             ),
           ),
+          if (onPressLogout != null)
+            ListTile(
+              onTap: onPressLogout,
+              leading: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                child: Icon(Icons.logout_rounded, color: Colors.redAccent, size: 20.sp),
+              ),
+              trailing: Icon(Icons.arrow_forward_ios, color: theme.iconTheme.color, size: 17.sp),
+              title: TextNormalWidget(
+                text: "تسجيل الخروج",
+                size: 15.sp,
+                color: Colors.redAccent,
+                decoration: TextDecoration.none,
+                decorationColor: Colors.redAccent,
+                maxLines: 1,
+                weight: FontWeight.bold,
+              ),
+            ),
         ],
       ),
     );
