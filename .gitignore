@@ -37,6 +37,7 @@ build/
 
 # Android related
 **/.gradle/
+**/.kotlin/
 **/captures/
 **/android/local.properties
 **/local.properties
